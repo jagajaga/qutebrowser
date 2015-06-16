@@ -151,6 +151,7 @@ Contributors, sorted by the number of commits in descending order:
 * rikn00
 * Patric Schmitz
 * Martin Zimmermann
+* Icabob4
 * Error 800
 * Brian Jackson
 * sbinix
