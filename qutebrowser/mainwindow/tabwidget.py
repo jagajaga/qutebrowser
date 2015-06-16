@@ -335,15 +335,14 @@ class TabBar(QTabBar):
         if icon.isNull():
             icon_size = QSize(0, 0)
         else:
-            extent = self.style().pixelMetric(QStyle.PM_TabBarIconSize, None,
-                                              self)
+            extent = config.get('tabs', 'favicons-size')
             icon_size = icon.actualSize(QSize(extent, extent))
             padding_count += 1
         indicator_width = config.get('tabs', 'indicator-width')
         if indicator_width != 0:
             indicator_width += config.get('tabs', 'indicator-space')
         padding_width = self.style().pixelMetric(PM_TabBarPadding, None, self)
-        height = self.fontMetrics().height()
+        height = max(self.fontMetrics().height(), icon_size.height())
         width = (self.fontMetrics().width('\u2026') +
                  icon_size.width() + padding_count * padding_width +
                  indicator_width)
@@ -361,7 +360,7 @@ class TabBar(QTabBar):
             A QSize.
         """
         minimum_size = self.minimumTabSizeHint(index)
-        height = self.fontMetrics().height()
+        height = minimum_size.height()
         if self.vertical:
             confwidth = str(config.get('tabs', 'width'))
             if confwidth.endswith('%'):
@@ -658,7 +657,7 @@ class TabBarStyle(QCommonStyle):
         """
         icon_size = opt.iconSize
         if not icon_size.isValid():
-            icon_extent = self.pixelMetric(QStyle.PM_SmallIconSize)
+            icon_extent = config.get('tabs', 'favicon-size')
             icon_size = QSize(icon_extent, icon_extent)
         icon_mode = (QIcon.Normal if opt.state & QStyle.State_Enabled
                      else QIcon.Disabled)
