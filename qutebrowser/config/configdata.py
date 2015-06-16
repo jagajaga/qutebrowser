@@ -501,7 +501,7 @@ def data(readonly=False):
 
             ('favicons-size',
              SettingValue(typ.Int(minval=8), '12'),
-             "The size of both width and height of the favicon in pixels"),
+             "The size of favicons in pixels."),
 
             ('width',
              SettingValue(typ.PercOrInt(minperc=0, maxperc=100, minint=1),
