@@ -31,7 +31,7 @@ from PyQt5.QtWidgets import (QTabWidget, QTabBar, QSizePolicy, QCommonStyle,
                              QStyle, QStylePainter, QStyleOptionTab)
 from PyQt5.QtGui import QIcon, QPalette, QColor
 
-from qutebrowser.utils import qtutils, objreg, utils
+from qutebrowser.utils import qtutils, objreg, utils, log
 from qutebrowser.config import config
 from qutebrowser.browser import webview
 
@@ -93,12 +93,15 @@ class TabWidget(QTabWidget):
 
     def set_page_title(self, idx, title):
         """Set the tab title user data."""
+        log.title.debug("Setting title for {} to {}".format(idx, title))
         self.tabBar().set_tab_data(idx, 'page-title', title)
         self.update_tab_title(idx)
 
     def page_title(self, idx):
         """Get the tab title user data."""
-        return self.tabBar().page_title(idx)
+        t = self.tabBar().page_title(idx)
+        log.title.debug("Getting title for {}: {}".format(idx, t))
+        return t
 
     def update_tab_title(self, idx):
         """Update the tab text for the given tab."""
@@ -117,6 +120,8 @@ class TabWidget(QTabWidget):
         fields['title_sep'] = ' - ' if page_title else ''
 
         fmt = config.get('tabs', 'title-format')
+        log.title.debug("Updating page title for {}: {}".format(
+            idx, page_title))
         self.tabBar().setTabText(idx, fmt.format(**fields))
 
     @config.change_filter('tabs', 'title-format')
@@ -258,9 +263,12 @@ class TabBar(QTabBar):
             raise IndexError("Tab index ({}) out of range ({})!".format(
                 idx, self.count()))
         data = self.tabData(idx)
+        log.title.debug("Previous tab data for {}: {}".format(idx, data))
         if data is None:
             data = {}
         data[key] = value
+        log.title.debug("Setting {} to {} -> new tab data for {}: {}".format(
+            key, value, idx, data))
         self.setTabData(idx, data)
 
     def tab_data(self, idx, key):
@@ -271,6 +279,8 @@ class TabBar(QTabBar):
         data = self.tabData(idx)
         if data is None:
             data = {}
+        log.title.debug("Getting tab data (key {}) for {} -> {}".format(
+            key, idx, data))
         return data[key]
 
     def page_title(self, idx):
