@@ -20,6 +20,7 @@ script:
     - tox -e pylint
     - tox -e pyroma
     - tox -e check-manifest
+    - 'which eslint >/dev/null && eslint qutebrowser'
 
 # Travis bug - OS X builds get routed to Ubuntu Trusty if "dist: trusty" is
 # given.
