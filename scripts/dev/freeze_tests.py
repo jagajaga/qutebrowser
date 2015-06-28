@@ -30,8 +30,10 @@ import cx_Freeze as cx  # pylint: disable=import-error
 # cx_Freeze is hard to install (needs C extensions) so we don't check for it.
 import pytest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.pardir))
-from scripts import setupcommon, freeze
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.pardir,
+                os.pardir))
+from scripts import setupcommon
+from scripts.dev import freeze
 
 
 @contextlib.contextmanager
@@ -59,7 +61,7 @@ def main():
     """Main entry point."""
     with temp_git_commit_file():
         cx.setup(
-            executables=[cx.Executable('scripts/run_frozen_tests.py',
+            executables=[cx.Executable('scripts/dev/run_frozen_tests.py',
                                        targetName='run-frozen-tests')],
             options={'build_exe': get_build_exe_options()},
             **setupcommon.setupdata
