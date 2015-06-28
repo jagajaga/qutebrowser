@@ -38,7 +38,7 @@ from scripts import setupcommon
 
 
 BASEDIR = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                       os.path.pardir)
+                       os.path.pardir, os.path.pardir)
 
 
 def get_egl_path():
