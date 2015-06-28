@@ -40,7 +40,7 @@ from scripts.dev import freeze
 def temp_git_commit_file():
     """Context manager to temporarily create a fake git-commit-id file."""
     basedir = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                           os.path.pardir)
+                           os.path.pardir, os.pardir)
     path = os.path.join(basedir, 'qutebrowser', 'git-commit-id')
     with open(path, 'wb') as f:
         f.write(b'fake-frozen-git-commit')
